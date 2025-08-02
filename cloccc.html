@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Live Clock with Red Dot</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .clock {
+      font-size: 3rem;
+      letter-spacing: 2px;
+      margin-bottom: 40px;
+    }
+
+    .dot-container {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: red;
+      opacity: 0;
+      transition: opacity 0.1s ease-in-out;
+    }
+
+    .dot.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="clock" id="clock">--:--:--</div>
+  <div class="dot-container">
+    <div class="dot" id="dot1"></div>
+    <div class="dot" id="dot2"></div>
+    <div class="dot" id="dot3"></div>
+  </div>
+
+  <script>
+    // Update clock every second
+    function updateClock() {
+      const now = new Date();
+      const h = now.getHours().toString().padStart(2, '0');
+      const m = now.getMinutes().toString().padStart(2, '0');
+      const s = now.getSeconds().toString().padStart(2, '0');
+      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock(); // initial
+
+    // Red dot blinking every 0.3333s
+    const dots = [document.getElementById('dot1'), document.getElementById('dot2'), document.getElementById('dot3')];
+    let activeDot = 0;
+
+    setInterval(() => {
+      // Clear all dots
+      dots.forEach(dot => dot.classList.remove('active'));
+
+      // Activate current dot
+      dots[activeDot].classList.add('active');
+
+      // Move to next dot
+      activeDot = (activeDot + 1) % dots.length;
+    }, 333);
+  </script>
+
+</body>
+</html>
